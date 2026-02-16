@@ -17,7 +17,9 @@ import xgboost as xgb
 import time
 
 t0 = time.time()
-DATA_DIR = "./"  # 데이터 파일이 있는 경로
+DATA_DIR = "./data/"  # 데이터 파일 폴더
+OUTPUT_PRED_DIR = "./results/predictions/"  # 예측 결과 폴더
+OUTPUT_PLOT_DIR = "./results/plots/"        # 시각화 이미지 폴더
 
 
 # ================================================================
@@ -401,7 +403,7 @@ try:
     ax.legend(fontsize=10, loc='upper left')
     ax.grid(alpha=0.3, linestyle='--')
     plt.tight_layout()
-    plt.savefig(DATA_DIR + 'result_2025_prediction.png', dpi=150, bbox_inches='tight')
+    plt.savefig(OUTPUT_PLOT_DIR + 'result_2025_prediction.png', dpi=150, bbox_inches='tight')
     plt.close()
     print("  [1/6] result_2025_prediction.png")
 
@@ -420,7 +422,7 @@ try:
     ax.grid(alpha=0.3, linestyle='--')
     ax.set_aspect('equal')
     plt.tight_layout()
-    plt.savefig(DATA_DIR + 'result_scatter.png', dpi=150, bbox_inches='tight')
+    plt.savefig(OUTPUT_PLOT_DIR + 'result_scatter.png', dpi=150, bbox_inches='tight')
     plt.close()
     print("  [2/6] result_scatter.png")
 
@@ -439,7 +441,7 @@ try:
     ax.set_title(f'피쳐 중요도 Top {top_n} (전체 {best_n}개 선택)', fontsize=13, fontweight='bold')
     ax.grid(axis='x', alpha=0.3, linestyle='--')
     plt.tight_layout()
-    plt.savefig(DATA_DIR + 'result_feature_importance.png', dpi=150, bbox_inches='tight')
+    plt.savefig(OUTPUT_PLOT_DIR + 'result_feature_importance.png', dpi=150, bbox_inches='tight')
     plt.close()
     print("  [3/6] result_feature_importance.png")
 
@@ -479,7 +481,7 @@ try:
     ax.legend(fontsize=10, loc='upper left')
     ax.grid(alpha=0.3, linestyle='--')
     plt.tight_layout()
-    plt.savefig(DATA_DIR + 'result_full_timeseries.png', dpi=150, bbox_inches='tight')
+    plt.savefig(OUTPUT_PLOT_DIR + 'result_full_timeseries.png', dpi=150, bbox_inches='tight')
     plt.close()
     print("  [4/6] result_full_timeseries.png")
 
@@ -515,7 +517,7 @@ try:
     plt.suptitle(f'잔차 분석  |  MAE={test_mae:,.0f}원  MAPE={test_mape:.1f}%',
                  fontsize=13, fontweight='bold', y=1.02)
     plt.tight_layout()
-    plt.savefig(DATA_DIR + 'result_residuals.png', dpi=150, bbox_inches='tight')
+    plt.savefig(OUTPUT_PLOT_DIR + 'result_residuals.png', dpi=150, bbox_inches='tight')
     plt.close()
     print("  [5/6] result_residuals.png")
 
@@ -542,7 +544,7 @@ try:
     ax.grid(axis='y', alpha=0.3, linestyle='--')
     ax.set_xticks(folds)
     plt.tight_layout()
-    plt.savefig(DATA_DIR + 'result_cv_results.png', dpi=150, bbox_inches='tight')
+    plt.savefig(OUTPUT_PLOT_DIR + 'result_cv_results.png', dpi=150, bbox_inches='tight')
     plt.close()
     print("  [6/6] result_cv_results.png")
 
@@ -559,7 +561,7 @@ result_df = test[['DATE', 'Year', 'Month', 'Period', TARGET]].copy()
 result_df['예측가격'] = y_pred
 result_df['오차'] = y_te - y_pred
 result_df['오차율(%)'] = np.abs(result_df['오차'] / y_te) * 100
-result_df.to_csv(DATA_DIR + 'result_2025_predictions.csv',
+result_df.to_csv(OUTPUT_PRED_DIR + 'result_2025_predictions.csv',
                  index=False, encoding='utf-8-sig')
 
 print(f"[저장] result_2025_predictions.csv")
